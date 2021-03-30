@@ -57,6 +57,7 @@ function App() {
       <ul>
         <li>Error in the console about Pool has too many crew. This does not affect the results.</li>
         <li>Error in the console about not being able to find crew '' in roster.  This does not affect the results.</li>
+        <li>Clicking the import button multiple times will create duplicate entries in the VoyagesImproved data.  The order and EV gains are still correct.</li>
       </ul>
       <div>---</div>
       <div>Game roster will be constantly synced after migration to <a href='https://datacore.app/' className="link">DataCore!</a></div>
