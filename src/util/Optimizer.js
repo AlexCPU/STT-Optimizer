@@ -3972,10 +3972,12 @@ const Optimizer = {
     while (sortingArray.length > 0) {
       let highestContribingTrainee = '';
       let highestContributedEV = 0;
+      let highestContributedVoyages='';
       sortingArray.forEach(crewName => {
         if (Optimizer.topCrewToTrain[crewName].totalEVAdded > highestContributedEV) {
           highestContribingTrainee = crewName;
           highestContributedEV = Optimizer.topCrewToTrain[crewName].totalEVAdded
+          highestContributedVoyages = Optimizer.topCrewToTrain[crewName].voyagesImproved
         }
       });
       if(highestContribingTrainee in Optimizer.rosterLibrary) {
@@ -3984,10 +3986,10 @@ const Optimizer = {
           addedEV: highestContributedEV,
           currentRarity: Optimizer.rosterLibrary[highestContribingTrainee].rarity,
           maxRarity: Optimizer.rosterLibrary[highestContribingTrainee].maxRarity,
+          voyagesImproved: highestContributedVoyages,
         });
       } else {
         console.log(`Error! Can't find crew: '${highestContribingTrainee}' in the roster`);
-
       }
       sortingArray.splice(sortingArray.indexOf(highestContribingTrainee), 1);
     }
@@ -4290,25 +4292,25 @@ const Optimizer = {
         //To get the EV of the crew with candidate at current rarity. It is possible that a candidate which is relevant at max rarity will not get picked at their current rarity
         //This will correctly reduce their EV/citation, reflecting a true increase of potential while fully cited while also properly suggesting that they might not be the best next choice
         let voyageRankingWithCandidateAtCurrentRarity = Optimizer.createCandidateRarityRankingArray(candidate.name, candidate.rarity, skillPairing);
-        console.log(`${skillPairing} voyage ranking array with ${candidate.name} at current rarity:`);
-        console.log(voyageRankingWithCandidateAtCurrentRarity);
+        //console.log(`${skillPairing} voyage ranking array with ${candidate.name} at current rarity:`);
+        //console.log(voyageRankingWithCandidateAtCurrentRarity);
         let voyageCrewWithCandidateAtCurrentRarity = Optimizer.findBestCrewWithRarityDependentCandidate(voyageRankingWithCandidateAtCurrentRarity, candidate.name);
-        console.log(`${skillPairing} voyage crew with ${candidate.name} at current rarity`);
-        console.log(voyageCrewWithCandidateAtCurrentRarity);
+        //console.log(`${skillPairing} voyage crew with ${candidate.name} at current rarity`);
+        //console.log(voyageCrewWithCandidateAtCurrentRarity);
         let voyageEVWithCandidateAtCurrentRarity = Optimizer.findEVofVoyageCrewWithRarityDependentCandidate(voyageCrewWithCandidateAtCurrentRarity, skillPairing, candidate.name, candidate.rarity);
-        console.log(`${skillPairing} voyage EV with ${candidate.name} at current rarity`);
-        console.log(voyageEVWithCandidateAtCurrentRarity);
+        //console.log(`${skillPairing} voyage EV with ${candidate.name} at current rarity`);
+        //console.log(voyageEVWithCandidateAtCurrentRarity);
 
         //Get the EV of crew with candidate at max rarity
         let voyageRankingWithCandidateAtMaxRarity = Optimizer.createCandidateRarityRankingArray(candidate.name, candidate.maxRarity, skillPairing);
-        console.log(`${skillPairing} voyage ranking array with ${candidate.name} at max rarity:`);
-        console.log(voyageRankingWithCandidateAtMaxRarity);
+        //console.log(`${skillPairing} voyage ranking array with ${candidate.name} at max rarity:`);
+        //console.log(voyageRankingWithCandidateAtMaxRarity);
         let voyageCrewWithCandidateAtMaxRarity = Optimizer.findBestCrewWithRarityDependentCandidate(voyageRankingWithCandidateAtMaxRarity, candidate.name);
-        console.log(`${skillPairing} voyage crew with ${candidate.name} at max rarity`);
-        console.log(voyageCrewWithCandidateAtMaxRarity);
+        //console.log(`${skillPairing} voyage crew with ${candidate.name} at max rarity`);
+        //console.log(voyageCrewWithCandidateAtMaxRarity);
         let voyageEVWithCandidateAtMaxRarity = Optimizer.findEVofVoyageCrewWithRarityDependentCandidate(voyageCrewWithCandidateAtMaxRarity, skillPairing, candidate.name, candidate.maxRarity);
-        console.log(`${skillPairing} voyage EV with ${candidate.name} at max rarity`);
-        console.log(voyageEVWithCandidateAtMaxRarity);
+        //console.log(`${skillPairing} voyage EV with ${candidate.name} at max rarity`);
+        //console.log(voyageEVWithCandidateAtMaxRarity);
 
         Optimizer.topCrewToCite[candidate.name].totalEVPerCitation += (voyageEVWithCandidateAtMaxRarity - voyageEVWithCandidateAtCurrentRarity)/(candidate.maxRarity - candidate.rarity);
       });
@@ -4322,15 +4324,18 @@ const Optimizer = {
     while (sortingArray.length > 0) {
       let highestContribingTrainee = '';
       let highestContributedEV = 0;
+      let highestContributedVoyages = '';
       sortingArray.forEach(crewName => {
         if (Optimizer.topCrewToCite[crewName].totalEVPerCitation > highestContributedEV) {
           highestContribingTrainee = crewName;
           highestContributedEV = Optimizer.topCrewToCite[crewName].totalEVPerCitation
+          highestContributedVoyages = Optimizer.topCrewToCite[crewName].voyagesImproved
         }
       });
       Optimizer.rankedCrewToCite.push({
         name: highestContribingTrainee,
-        evPerCitation: highestContributedEV
+        evPerCitation: highestContributedEV,
+        voyagesImproved: highestContributedVoyages,
       });
       sortingArray.splice(sortingArray.indexOf(highestContribingTrainee), 1);
     }
