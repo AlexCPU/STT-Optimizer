@@ -3424,7 +3424,9 @@ const Optimizer = {
     if (!pool.assignedCrew.includes(crewName)) {
       pool.assignedCrew.push(crewName);
       if (pool.assignedCrew.length > pool.seats) {
-        console.log(`Error! Pool has too many crew!`);
+        console.log(`Assigning ${crewName} to pool:`);
+        console.log(pool);
+        console.log(`Error! Pool has too many crew! Length is ${pool.assignedCrew.length} and seats is ${pool.seats}`);
       } else if (pool.assignedCrew.length == pool.seats) {
         pool.full = true;
         Optimizer.fillSubSets(pool);
@@ -3976,12 +3978,17 @@ const Optimizer = {
           highestContributedEV = Optimizer.topCrewToTrain[crewName].totalEVAdded
         }
       });
-      Optimizer.rankedCrewToTrain.push({
-        name: highestContribingTrainee,
-        addedEV: highestContributedEV,
-        currentRarity: Optimizer.rosterLibrary[highestContribingTrainee].rarity,
-        maxRarity: Optimizer.rosterLibrary[highestContribingTrainee].maxRarity,
-      });
+      if(highestContribingTrainee in Optimizer.rosterLibrary) {
+        Optimizer.rankedCrewToTrain.push({
+          name: highestContribingTrainee,
+          addedEV: highestContributedEV,
+          currentRarity: Optimizer.rosterLibrary[highestContribingTrainee].rarity,
+          maxRarity: Optimizer.rosterLibrary[highestContribingTrainee].maxRarity,
+        });
+      } else {
+        console.log(`Error! Can't find crew: '${highestContribingTrainee}' in the roster`);
+
+      }
       sortingArray.splice(sortingArray.indexOf(highestContribingTrainee), 1);
     }
   },
