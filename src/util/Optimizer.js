@@ -3310,6 +3310,7 @@ const Optimizer = {
         }
       }
       crew.skillSet.skillArray.sort();
+
       for (let skillIndex = 0; skillIndex < crew.skillSet.skillArray.length; skillIndex++) {
         crew.skillSet.signature += crew.skillSet.skillArray[skillIndex].slice(0, crew.skillSet.skillArray[skillIndex].indexOf('_'));
           if (skillIndex != crew.skillSet.skillArray.length - 1) {
@@ -4322,7 +4323,7 @@ const Optimizer = {
       });
       Optimizer.rankedCrewToCite.push({
         name: highestContribingTrainee,
-        addedEV: highestContributedEV
+        evPerCitation: highestContributedEV
       });
       sortingArray.splice(sortingArray.indexOf(highestContribingTrainee), 1);
     }
