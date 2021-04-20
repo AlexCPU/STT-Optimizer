@@ -62,7 +62,7 @@ function App() {
       <div>---</div>
       <div>Game roster will be constantly synced after migration to <a href='https://datacore.app/' className="link">DataCore!</a></div>
       <div>---</div>
-      <div>Last Game Roster Update: 3-27-2021</div>
+      <div>Last Game Roster Update: 20-04-2021</div>
     </div>
   );
 }
